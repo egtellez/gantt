@@ -167,9 +167,10 @@ var Gantt = (function () {
         format(date, format_string = 'YYYY-MM-DD HH:mm:ss.SSS', lang = 'en') {
             const values = this.get_date_values(date).map((d) => padStart(d, 2, 0));
             let quarter, year;
-            quarter =  Math.ceil((padStart(+values[1] + 2, 2, 0)) / 3);
-            year = values[0]
-            if(quarter > 4){ quarter = Math.floor(quarter / 4); year = parseInt(year) + 1;}
+            quarter =  Math.ceil(parseInt(values[1]) / 3);
+            year = values[0];
+            if(quarter > 4){ quarter = Math.floor(parseInt(quarter) / 4); year = parseInt(year) + 1;}
+            quarter = parseInt(quarter) + 1;
             const format_map = {
                 QQ: 'Q' +  + quarter + '-' + year.toString().substr(-2),
                 YYYY: values[0],
@@ -242,6 +243,30 @@ var Gantt = (function () {
             return new Date();
         },
 
+        calculate_quarter_adds(date, qty) {
+            var month_result = date.getMonth() + (qty*3);
+            var extra_years = 0;
+            if(month_result > 11) {
+               extra_years = Math.floor(month_result / 11)
+               month_result = month_result % 11 - 1
+            } else if (month_result < 0) {
+               extra_years = Math.ceil((month_result)*-1 / 11)
+               extra_years = extra_years*-1
+               month_result = month_result % 11 + 1
+            }
+
+            const vals = [
+                date.getFullYear() + extra_years,
+                month_result,
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                date.getMilliseconds()
+            ];
+            return vals;
+        },
+
         add(date, qty, scale) {
             qty = parseInt(qty, 10);
             const vals = [
@@ -253,13 +278,18 @@ var Gantt = (function () {
                 date.getSeconds() + (scale === SECOND ? qty : 0),
                 date.getMilliseconds() + (scale === MILLISECOND ? qty : 0),
             ];
-            return new Date(...vals);
+
+            if(scale == QUARTER) {
+                var cur_date =  new Date(...this.calculate_quarter_adds(date, qty));
+                return cur_date;
+            } else {
+                return new Date(...vals);
+            }
         },
 
         start_of(date, scale) {
             const scores = {
-                [YEAR]: 7,
-                [QUARTER]: 6,
+                [YEAR]: 6,
                 [MONTH]: 5,
                 [DAY]: 4,
                 [HOUR]: 3,
@@ -276,7 +306,6 @@ var Gantt = (function () {
             const vals = [
                 date.getFullYear(),
                 should_reset(YEAR) ? 0 : date.getMonth(),
-                should_reset(QUARTER) ? 0 : Math.ceil((date.getMonth() + 1) / 3),
                 should_reset(MONTH) ? 1 : date.getDate(),
                 should_reset(DAY) ? 0 : date.getHours(),
                 should_reset(HOUR) ? 0 : date.getMinutes(),
@@ -1271,8 +1300,10 @@ var Gantt = (function () {
                 this.gantt_start = date_utils.add(this.gantt_start, -7, 'day');
                 this.gantt_end = date_utils.add(this.gantt_end, 7, 'day');
             } else if (this.view_is(VIEW_MODE.MONTH)) {
-                this.gantt_start = date_utils.start_of(this.gantt_start, 'year');
-                this.gantt_end = date_utils.add(this.gantt_end, 1, 'year');
+                this.gantt_start = date_utils.start_of(this.gantt_start, 'month');
+                this.gantt_end = date_utils.add(this.gantt_end, 1, 'month');
+            } else if (this.view_is(VIEW_MODE.QUARTER)) {
+                this.gantt_start = date_utils.add(this.gantt_start, 'quarter');
             } else if (this.view_is(VIEW_MODE.YEAR)) {
                 this.gantt_start = date_utils.add(this.gantt_start, -2, 'year');
                 this.gantt_end = date_utils.add(this.gantt_end, 2, 'year');
@@ -1294,6 +1325,9 @@ var Gantt = (function () {
                         cur_date = date_utils.add(cur_date, 1, 'year');
                     } else if (this.view_is(VIEW_MODE.MONTH)) {
                         cur_date = date_utils.add(cur_date, 1, 'month');
+                    } else if (this.view_is(VIEW_MODE.QUARTER))
+                    {
+                        cur_date = date_utils.add(cur_date, 1, 'quarter')
                     } else {
                         cur_date = date_utils.add(
                             cur_date,
@@ -1325,7 +1359,7 @@ var Gantt = (function () {
 
         setup_layers() {
             this.layers = {};
-            const layers = ['grid', 'date', 'arrow', 'progress', 'bar', 'details'];
+            const layers = ['grid', 'general_data', 'date', 'arrow', 'progress', 'bar', 'details'];
             // make group layers
             for (let layer of layers) {
                 this.layers[layer] = createSVG('g', {
@@ -1493,6 +1527,7 @@ var Gantt = (function () {
         }
 
         make_dates() {
+           
             for (let date of this.get_dates_to_draw()) {
                 createSVG('text', {
                     x: date.lower_x,
@@ -1531,10 +1566,11 @@ var Gantt = (function () {
             return dates;
         }
 
+
         get_date_info(date, last_date, i) {
             if (!last_date) {
                 last_date = date_utils.add(date, 1, 'year');
-            }
+            } 
             const date_text = {
                 'Quarter Day_lower': date_utils.format(
                     date,
