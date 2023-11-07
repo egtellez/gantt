@@ -9,8 +9,22 @@
 			background: #ccc;
 		}
 		.container {
-			width: 80%;
+			width: 100%;
 			margin: 0 auto;
+		}
+		.container .data tr td {
+			border:#ccc solid 1px;
+			min-width:60px;
+		}
+		.data-header td{
+			border:#ccc solid 1px;
+			height:22px;
+			min-width: 60px;
+		}
+		.data-row td{
+			border:#ccc solid 1px;
+			height:32px;
+			min-width: 60px;
 		}
 		/* custom class */
 		.gantt .bar-milestone .bar {
@@ -25,10 +39,124 @@
 </head>
 <body>
 	<div class="container">
-		<h2 class="heading">Interactive Gantt Chart entirely made in SVG!</h2>
-		<div class="gantt-target"></div>
+		<table style="background: #fff; font-size:11px;">
+			<tr style="vertical-align: top;">
+				<td>
+					<table>
+						<tr  class="data-header">
+							<td><div>CPUID</div></td>
+							<td><div>O. Pltfm Id</div></td>
+							<td><div>Ind. Pltfm Id</div></td>
+							<td><div>Type</div></td>
+							<td><div>CodeName</div></td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+						<tr class="data-row">
+							<td>50654</td>
+							<td>0xb7</td>
+							<td>0x01</td>
+							<td>Core</td>
+							<td>Skylake Server</td>
+						</tr>
+					</table>
+				</td>
+				<td><div class="gantt-target"></div></td>
+			</tr>
+		</table>
 	</div>
 	<script>
+		var data_headers = ['CPUID', 'PltfmId', 'Type', 'CodeNm',
+		'Launch', 'Launch+7', 'ROE']
 		var tasks = [
 			{
 				start: '2017-01-01',
@@ -43,10 +171,93 @@
 				name: '',
 				id: "Task 0",
 				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2017-01-01',
+				end: '2023-04-01',
+				name: '',
+				id: "Task 6",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 20
 			}
-
 		]
-		var gantt_chart = new Gantt(".gantt-target", tasks, {
+		var gantt_chart = new Gantt(".gantt-target", tasks, data_headers, {
 			on_click: task => {
 				console.log(task);
 			},

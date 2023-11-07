@@ -6,6 +6,14 @@
   stroke: #e0e0e0;
   stroke-width: 1.4;
 }
+
+.gantt .tlos-highlight{
+  fill: #ee0000;
+}
+
+.gantt .wtf-highlight{
+  fill: #eeaa00;
+}
 .gantt .grid-row {
   fill: #ffffff;
 }
@@ -15,6 +23,11 @@
 .gantt .row-line {
   stroke: #ebeff2;
 }
+.gantt .wtf-line {
+  stroke: #333;
+  stroke-dasharray:1cap;
+}
+
 .gantt .tick {
   stroke: #A0A0A0;
   stroke-width: 0.2;

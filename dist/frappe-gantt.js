@@ -1,3 +1,6 @@
+const data_header_width = 50;
+var gantt_offset = 0;
+
 var Gantt = (function () {
     'use strict';
 
@@ -522,7 +525,7 @@ var Gantt = (function () {
         prepare_values() {
             this.invalid = this.task.invalid;
             this.height = this.gantt.options.bar_height;
-            this.x = this.compute_x();
+            this.x = gantt_offset + this.compute_x();
             this.y = this.compute_y();
             this.corner_radius = this.gantt.options.bar_corner_radius;
             this.duration =
@@ -1084,10 +1087,11 @@ var Gantt = (function () {
     };
 
     class Gantt {
-        constructor(wrapper, tasks, options) {
+        constructor(wrapper, tasks, data_headers, options) {
             this.setup_wrapper(wrapper);
             this.setup_options(options);
             this.setup_tasks(tasks);
+            this.setup_data_headers(data_headers);
             // initialize with default view mode
             this.change_view_mode();
             this.bind_events();
@@ -1157,6 +1161,10 @@ var Gantt = (function () {
                 language: 'en',
             };
             this.options = Object.assign({}, default_options, options);
+        }
+
+        setup_data_headers(data_headers) {
+            this.data_headers = data_headers;
         }
 
         setup_tasks(tasks) {
@@ -1349,8 +1357,12 @@ var Gantt = (function () {
             this.clear();
             this.setup_layers();
             this.make_grid();
+
+            //this.make_data_headers();
+            //this.make_data_rows();
             this.make_dates();
             this.make_bars();
+            this.make_circle();
             this.make_arrows();
             this.map_arrows_on_bars();
             this.set_width();
@@ -1359,7 +1371,7 @@ var Gantt = (function () {
 
         setup_layers() {
             this.layers = {};
-            const layers = ['grid', 'general_data', 'date', 'arrow', 'progress', 'bar', 'details'];
+            const layers = ['grid', 'data_headers', 'date', 'arrow', 'progress', 'bar', 'details', 'circle'];
             // make group layers
             for (let layer of layers) {
                 this.layers[layer] = createSVG('g', {
@@ -1367,6 +1379,25 @@ var Gantt = (function () {
                     append_to: this.$svg,
                 });
             }
+        }
+
+        make_data_headers() {
+            var new_x = 20;
+            gantt_offset = 0; //this.data_headers.length*data_header_width;
+            for (let data_header of this.data_headers) {
+                createSVG('text', {
+                    x: new_x,
+                    y: 20,
+                    innerHTML: data_header,
+                    class: 'lower-text',
+                    append_to: this.layers.data_headers,
+                });
+                new_x = new_x + data_header_width
+            }
+        }
+
+        make_data_rows() {
+
         }
 
         make_grid() {
@@ -1395,7 +1426,7 @@ var Gantt = (function () {
             });
 
             $.attr(this.$svg, {
-                height: grid_height + this.options.padding + 100,
+                height: grid_height,
                 width: '100%',
             });
         }
@@ -1499,6 +1530,41 @@ var Gantt = (function () {
             }
         }
 
+        make_circle() {
+
+            createSVG('line', 
+            {
+                x1: 875,
+                y1: 30,
+                x2: 875,
+                y2: 560,
+                class: 'wtf-line',
+                append_to: this.layers.circle
+            });
+
+            createSVG('circle', 
+            {
+                cx: 1175,
+                cy: 48,
+                r: 8,
+                class: 'tlos-highlight',
+                append_to: this.layers.circle
+            });
+            var extra = 0;
+            for (let task of this.tasks) {
+                createSVG('rect', 
+                {
+                    x: 600,
+                    y: 38 + extra,
+                    width: 50,
+                    height: 18,
+                    class: 'wtf-highlight',
+                    append_to: this.layers.circle
+                });
+                extra += 38;
+            }
+        }
+
         make_grid_highlights() {
             // highlight today's date
             if (this.view_is(VIEW_MODE.DAY)) {
@@ -1527,7 +1593,6 @@ var Gantt = (function () {
         }
 
         make_dates() {
-           
             for (let date of this.get_dates_to_draw()) {
                 createSVG('text', {
                     x: date.lower_x,
