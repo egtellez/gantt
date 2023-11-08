@@ -11,6 +11,11 @@
   fill: #ee0000;
 }
 
+.gantt .current-quarter-highlight{
+  fill: #eeaa00;
+  fill-opacity: 20%;
+}
+
 .gantt .wtf-highlight{
   fill: #eeaa00;
 }
@@ -24,7 +29,12 @@
   stroke: #ebeff2;
 }
 .gantt .wtf-line {
-  stroke: #333;
+  stroke: #A0A0A0;
+  stroke-width: 2;
+}
+
+.gantt .current-quarter-line {
+  stroke: #A0A0A0;
   stroke-dasharray:1cap;
 }
 
@@ -45,14 +55,14 @@
   stroke-width: 1.4;
 }
 .gantt .bar {
+  fill: #d8e2ec;
+}
+.gantt .bar-progress {
   fill: #b8c2cc;
   stroke: #8D99A6;
   stroke-width: 0;
   transition: stroke-width 0.3s ease;
   user-select: none;
-}
-.gantt .bar-progress {
-  fill: #a3a3ff;
 }
 .gantt .bar-invalid {
   fill: transparent;

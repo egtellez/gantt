@@ -155,14 +155,68 @@
 		</table>
 	</div>
 	<script>
-		var data_headers = ['CPUID', 'PltfmId', 'Type', 'CodeNm',
-		'Launch', 'Launch+7', 'ROE']
 		var tasks = [
 			{
-				start: '2017-01-01',
-				end: '2023-04-01',
+				start: '2017-06-01',
+				end: '2024-04-01',
 				name: '',
 				id: "Task 6",
+				progress: 0
+			},
+			{
+				start: '2020-01-01',
+				end: '2026-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2015-07-01',
+				end: '2022-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2021-04-01',
+				end: '2028-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2018-04-01',
+				end: '2025-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2022-01-01',
+				end: '2028-10-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2020-04-01',
+				end: '2027-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2023-01-01',
+				end: '2030-01-01',
+				name: '',
+				id: "Task 6",
+				progress: 0
+			},
+			{
+				start: '2021-10-01',
+				end: '2028-07-01',
+				name: '',
+				id: "Task 0",
 				progress: 0
 			},
 			{
@@ -170,48 +224,6 @@
 				end: '2025-10-01',
 				name: '',
 				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2017-01-01',
-				end: '2023-04-01',
-				name: '',
-				id: "Task 6",
 				progress: 0
 			},
 			{
@@ -219,45 +231,31 @@
 				end: '2025-10-01',
 				name: '',
 				id: "Task 0",
-				progress: 20
+				progress: 0
 			},
 			{
 				start: '2019-07-01',
 				end: '2025-10-01',
 				name: '',
 				id: "Task 0",
-				progress: 20
+				progress: 0
 			},
 			{
 				start: '2019-07-01',
 				end: '2025-10-01',
 				name: '',
 				id: "Task 0",
-				progress: 20
+				progress: 0
 			},
 			{
 				start: '2019-07-01',
 				end: '2025-10-01',
 				name: '',
 				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
-			},
-			{
-				start: '2019-07-01',
-				end: '2025-10-01',
-				name: '',
-				id: "Task 0",
-				progress: 20
+				progress: 0
 			}
 		]
-		var gantt_chart = new Gantt(".gantt-target", tasks, data_headers, {
+		var gantt_chart = new Gantt(".gantt-target", tasks, {
 			on_click: task => {
 				console.log(task);
 			},
@@ -274,7 +272,6 @@
 			header_height: 20,
 			language: 'en'
 		});
-		console.log(gantt_chart);
 	</script>
 </body>
 </html>

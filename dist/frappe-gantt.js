@@ -1,5 +1,3 @@
-const data_header_width = 50;
-var gantt_offset = 0;
 
 var Gantt = (function () {
     'use strict';
@@ -12,6 +10,7 @@ var Gantt = (function () {
     const MINUTE = 'minute';
     const SECOND = 'second';
     const MILLISECOND = 'millisecond';
+    const MAX_Serviceability = 10;
 
     const month_names = {
         en: [
@@ -522,20 +521,47 @@ var Gantt = (function () {
             this.prepare_helpers();
         }
 
+        convert_to_quarter_date(c_date){
+            const year = c_date.getFullYear();
+            var month = c_date.getMonth() + 1;
+            const day = 1;
+            if(month >= 1 && month < 4){
+                month = 0;
+            }
+            else if(month >= 4 && month < 7 ) {
+                month = 3;
+            }
+            else if(month >=7 && month < 10) {
+                month = 6;
+            }
+            else{
+                month = 9;
+            }
+            return new Date(year, month, day);
+        }
+
         prepare_values() {
             this.invalid = this.task.invalid;
             this.height = this.gantt.options.bar_height;
-            this.x = gantt_offset + this.compute_x();
+            this.x = this.compute_x();
             this.y = this.compute_y();
             this.corner_radius = this.gantt.options.bar_corner_radius;
-            this.duration =
+            var serviceability_duration = MAX_Serviceability*4;
+            if(this.gantt.view_is('Quarter')) {
+                const end_date = this.convert_to_quarter_date(this.task._end);
+                const start_date = this.convert_to_quarter_date(this.task._start);
+                this.duration = Math.ceil(date_utils.diff(end_date, start_date, 'month') / 3)
+               
+            }else{
+                this.duration =
                 date_utils.diff(this.task._end, this.task._start, 'hour') /
                 this.gantt.options.step;
-            this.width = this.gantt.options.column_width * this.duration;
+            }
+
+            this.width = this.gantt.options.column_width * serviceability_duration;
             this.progress_width =
                 this.gantt.options.column_width *
-                    this.duration *
-                    (this.task.progress / 100) || 0;
+                    this.duration;
             this.group = createSVG('g', {
                 class: 'bar-wrapper ' + (this.task.custom_class || ''),
                 'data-id': this.task.id,
@@ -817,6 +843,11 @@ var Gantt = (function () {
                 const diff = date_utils.diff(task_start, gantt_start, 'day');
                 x = (diff * column_width) / 30;
             }
+
+            if (this.gantt.view_is('Quarter')) {
+                const diff = date_utils.diff(task_start, gantt_start, 'month');
+                x = Math.floor(diff / 3) * column_width;
+            }
             return x;
         }
 
@@ -1087,11 +1118,10 @@ var Gantt = (function () {
     };
 
     class Gantt {
-        constructor(wrapper, tasks, data_headers, options) {
+        constructor(wrapper, tasks, options) {
             this.setup_wrapper(wrapper);
             this.setup_options(options);
             this.setup_tasks(tasks);
-            this.setup_data_headers(data_headers);
             // initialize with default view mode
             this.change_view_mode();
             this.bind_events();
@@ -1161,10 +1191,6 @@ var Gantt = (function () {
                 language: 'en',
             };
             this.options = Object.assign({}, default_options, options);
-        }
-
-        setup_data_headers(data_headers) {
-            this.data_headers = data_headers;
         }
 
         setup_tasks(tasks) {
@@ -1357,12 +1383,10 @@ var Gantt = (function () {
             this.clear();
             this.setup_layers();
             this.make_grid();
-
-            //this.make_data_headers();
-            //this.make_data_rows();
             this.make_dates();
             this.make_bars();
-            this.make_circle();
+            this.make_serviceability_highlight();
+            this.make_current_quarter_highlight();
             this.make_arrows();
             this.map_arrows_on_bars();
             this.set_width();
@@ -1379,25 +1403,6 @@ var Gantt = (function () {
                     append_to: this.$svg,
                 });
             }
-        }
-
-        make_data_headers() {
-            var new_x = 20;
-            gantt_offset = 0; //this.data_headers.length*data_header_width;
-            for (let data_header of this.data_headers) {
-                createSVG('text', {
-                    x: new_x,
-                    y: 20,
-                    innerHTML: data_header,
-                    class: 'lower-text',
-                    append_to: this.layers.data_headers,
-                });
-                new_x = new_x + data_header_width
-            }
-        }
-
-        make_data_rows() {
-
         }
 
         make_grid() {
@@ -1527,6 +1532,55 @@ var Gantt = (function () {
                 } else {
                     tick_x += this.options.column_width;
                 }
+            }
+        }
+
+        make_current_quarter_highlight()
+        {
+            var curr_date = Date.now();
+            var duration = Math.floor(date_utils.diff(curr_date, this.gantt_start, 'month') / 3);
+            var line_height = 38 * (this.tasks.length + 1);
+            createSVG('rect', 
+            {
+                x: this.options.column_width * duration,
+                y: 0,
+                width: 50,
+                height: 30,
+                class: 'current-quarter-highlight',
+                append_to: this.layers.circle
+            });
+
+            createSVG('line', 
+            {
+                x1: this.options.column_width * duration + 25,
+                y1: 38,
+                x2: this.options.column_width * duration + 25,
+                y2: line_height,
+                class: 'current-quarter-line',
+                append_to: this.layers.circle
+            });
+        }
+
+        make_serviceability_highlight()
+        {
+            const start_date = this.gantt_start;
+            var x = 0;
+            var column_height = 0;
+            for (let task of this.tasks) {
+                const end_date = task._end;
+                const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
+                const diff = date_utils.diff(task._start, start_date, 'month');
+                x = duration * this.options.column_width + 48;
+                column_height += 38;
+                createSVG('line', 
+                {
+                    x1: x,
+                    y1: column_height,
+                    x2: x,
+                    y2: column_height + 20,
+                    class: 'wtf-line',
+                    append_to: this.layers.circle
+                });
             }
         }
 
