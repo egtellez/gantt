@@ -1,3 +1,26 @@
+div.container
+{
+    overflow: auto;    
+    /* POSITION */
+    position: relative;
+    
+}
+
+div.data_table
+{    
+    /* REMOVE FLOAT */
+    /* float: left; */
+    
+    /* POSITION */
+    position: fixed;
+    left: 5;
+}
+
+div.gantt-target
+{
+   margin-left: 620px;
+}
+
 .gantt .grid-background {
   fill: none;
 }
@@ -6,17 +29,13 @@
   stroke: #e0e0e0;
   stroke-width: 1.4;
 }
-.legend {
-  width:750px; 
-  height:20px;
-}
 
 .tlos-highlight{
-  fill: #ee0000;
+  fill: rgb(219, 016, 072);
 }
 
 .optlos-highlight{
-  fill: #4466AA;
+  fill: rgb(244, 179, 001);
 }
 
 .current-quarter-highlight{
@@ -37,8 +56,14 @@
   stroke: #ebeff2;
 }
 .gantt .wtf-line {
-  stroke: #A0A0A0;
+  stroke: rgb(016, 101, 171);
   stroke-width: 2;
+}
+
+.legend {
+  width:800px; 
+  height:20px;
+  font-size:12px;
 }
 
 .tlos-line {
@@ -73,10 +98,10 @@
   stroke-width: 1.4;
 }
 .bar {
-  fill: #d8e2ec;
+  fill: rgb(209, 229, 240);
 }
 .bar-progress {
-  fill: #b8c2cc;
+  fill:rgb(058, 147, 195);
   stroke: #8D99A6;
   stroke-width: 0;
   transition: stroke-width 0.3s ease;
@@ -144,8 +169,6 @@
 }
 
 .gantt-container {
-  position: relative;
-  overflow: auto;
   font-size: 12px;
 }
 .gantt-container .popup-wrapper {

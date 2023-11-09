@@ -173,8 +173,9 @@ var Gantt = (function () {
             year = values[0];
             if(quarter > 4){ quarter = Math.floor(parseInt(quarter) / 4); year = parseInt(year) + 1;}
             quarter = parseInt(quarter) + 1;
+          
             const format_map = {
-                QQ: 'Q' +  + quarter + '-' + year.toString().substr(-2),
+                QQ: 'Q' + quarter,
                 YYYY: values[0],
                 MM: padStart(+values[1] + 1, 2, 0),
                 DD: values[2],
@@ -1177,7 +1178,7 @@ var Gantt = (function () {
         setup_options(options) {
             const default_options = {
                 header_height: 50,
-                column_width: 30,
+                column_width: 20,
                 step: 24,
                 view_modes: [...Object.values(VIEW_MODE)],
                 bar_height: 20,
@@ -1199,6 +1200,14 @@ var Gantt = (function () {
                 // convert to Date objects
                 task._start = date_utils.parse(task.start);
                 task._end = date_utils.parse(task.end);
+
+                if(task.tlos != undefined) {
+                    task._tlos = date_utils.parse(task.tlos);
+                }
+
+                if(task.optlos != undefined) {
+                    task._optlos = date_utils.parse(task.optlos);
+                }
 
                 // make task invalid if duration too large
                 if (date_utils.diff(task._end, task._start, 'year') > 10) {
@@ -1301,7 +1310,7 @@ var Gantt = (function () {
                 this.options.column_width = 120;
             } else if (view_mode === VIEW_MODE.QUARTER) {
                 this.options.step = 24 * (365 / 3);
-                this.options.column_width = 50;
+                this.options.column_width = 20;
             } else if (view_mode === VIEW_MODE.YEAR) {
                 this.options.step = 24 * 365;
                 this.options.column_width = 120;
@@ -1317,12 +1326,15 @@ var Gantt = (function () {
             this.gantt_start = this.gantt_end = null;
 
             for (let task of this.tasks) {
+
+                var diff = date_utils.diff(task._end, task._start, 'month');
+                var end_date_to_compare = date_utils.add(task._end, (MAX_Serviceability*12) - diff, 'month');
                 // set global start and end date
                 if (!this.gantt_start || task._start < this.gantt_start) {
                     this.gantt_start = task._start;
                 }
-                if (!this.gantt_end || task._end > this.gantt_end) {
-                    this.gantt_end = task._end;
+                if (!this.gantt_end || end_date_to_compare > this.gantt_end) {
+                    this.gantt_end = end_date_to_compare;
                 }
             }
 
@@ -1387,6 +1399,8 @@ var Gantt = (function () {
             this.make_bars();
             this.make_serviceability_highlight();
             this.make_current_quarter_highlight();
+            this.make_tlos_marks();
+            this.make_optlos_marks();
             this.make_arrows();
             this.map_arrows_on_bars();
             this.set_width();
@@ -1544,7 +1558,7 @@ var Gantt = (function () {
             {
                 x: this.options.column_width * duration,
                 y: 0,
-                width: 50,
+                width: this.options.column_width,
                 height: 30,
                 class: 'current-quarter-highlight',
                 append_to: this.layers.circle
@@ -1552,9 +1566,9 @@ var Gantt = (function () {
 
             createSVG('line', 
             {
-                x1: this.options.column_width * duration + 25,
+                x1: this.options.column_width * duration + Math.floor(this.options.column_width / 2),
                 y1: 38,
-                x2: this.options.column_width * duration + 25,
+                x2: this.options.column_width * duration + Math.floor(this.options.column_width / 2),
                 y2: line_height,
                 class: 'current-quarter-line',
                 append_to: this.layers.circle
@@ -1570,7 +1584,7 @@ var Gantt = (function () {
                 const end_date = task._end;
                 const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
                 const diff = date_utils.diff(task._start, start_date, 'month');
-                x = duration * this.options.column_width + 48;
+                x = duration * this.options.column_width + this.options.column_width;
                 column_height += 38;
                 createSVG('line', 
                 {
@@ -1581,6 +1595,71 @@ var Gantt = (function () {
                     class: 'wtf-line',
                     append_to: this.layers.circle
                 });
+            }
+        }
+
+        make_tlos_marks()
+        {
+            const start_date = this.gantt_start;
+            var x = 0;
+            var column_height = 0;
+            for (let task of this.tasks) {
+                const end_date = task._tlos;
+                if (end_date == undefined) { continue;}
+                const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
+                const diff = date_utils.diff(task._start, start_date, 'month');
+                x = duration * this.options.column_width + Math.ceil(this.options.column_width / 2);
+                column_height += 38;
+                createSVG('line', 
+                {
+                    x1: x,
+                    y1: column_height,
+                    x2: x,
+                    y2: column_height + 20,
+                    class: 'tlos-line',
+                    append_to: this.layers.circle
+                });
+                createSVG('circle', 
+                {
+                    cx: x,
+                    cy: column_height + 10,
+                    r: 5,
+                    class: 'tlos-highlight',
+                    append_to: this.layers.circle
+                });
+              
+            }
+        }
+
+        make_optlos_marks() {
+            const start_date = this.gantt_start;
+            var x = 0;
+            var column_height = 0;
+            for (let task of this.tasks) {
+                const end_date = task._optlos;
+                if (end_date == undefined) { continue;}
+                const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
+                const diff = date_utils.diff(task._start, start_date, 'month');
+                x = duration * this.options.column_width + Math.floor(this.options.column_width / 2);
+                column_height += 38;
+                createSVG('line', 
+                {
+                    x1: x,
+                    y1: column_height,
+                    x2: x,
+                    y2: column_height + 20,
+                    class: 'optlos-line',
+                    append_to: this.layers.circle
+                });
+                createSVG('circle', 
+                {
+                    cx: x,
+                    cy: column_height + 10,
+                    r: 5,
+                    class: 'optlos-highlight',
+                    append_to: this.layers.circle
+                });
+              
             }
         }
 
@@ -1651,7 +1730,7 @@ var Gantt = (function () {
                 createSVG('text', {
                     x: date.lower_x,
                     y: date.lower_y,
-                    innerHTML: date.lower_text,
+                    innerHTML: '<tspan x="' + date.lower_x + '" y="' + (date.lower_y - 5) + '">' + date.upper_text + '</tspan><tspan x="' + date.lower_x + '" dy="9">' + date.lower_text + '</tspan>',
                     class: 'lower-text',
                     append_to: this.layers.date,
                 });
@@ -1710,7 +1789,7 @@ var Gantt = (function () {
                         ? date_utils.format(date, 'D MMM', this.options.language)
                         : date_utils.format(date, 'D', this.options.language),
                 Month_lower: date_utils.format(date, 'MMMM', this.options.language),
-                Quarter_lower: date_utils.format(date, 'QQ', this.options.language),
+                Quarter_lower: date.getFullYear().toString().substr(-2),
                 Year_lower: date_utils.format(date, 'YYYY', this.options.language),
                 'Quarter Day_upper':
                     date.getDate() !== last_date.getDate()
@@ -1734,6 +1813,8 @@ var Gantt = (function () {
                     date.getMonth() !== last_date.getMonth()
                         ? date_utils.format(date, 'MMMM', this.options.language)
                         : '',
+                Quarter_upper:
+                    date_utils.format(date, 'QQ', this.options.language),
                 Month_upper:
                     date.getFullYear() !== last_date.getFullYear()
                         ? date_utils.format(date, 'YYYY', this.options.language)

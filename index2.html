@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PSM Dashboard</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			background: #fff;
+		}
+		.container {
+			width: 100%;
+			margin: 0 auto;
+		}
+		.container .data tr td {
+			border:#ccc solid 1px;
+			min-width:60px;
+		}
+		.data-header td{
+			border:#ccc solid 1px;
+			height:22px;
+			min-width: 60px;
+		}
+		.data-row td{
+			border:#ccc solid 1px;
+			height:32px;
+			min-width: 60px;
+		}
+		/* custom class */
+		.gantt .bar-milestone .bar {
+			fill: tomato;
+		}
+		.heading {
+			text-align: center;
+		}
+	</style>
+	<link rel="stylesheet" href="dist/frappe-gantt2.css" />
+	<script src="dist/frappe-gantt.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="legend">
+			<b>Legend:</b>
+			7 yr support timeline <svg height="10" width="60"><rect x="0" y="0" width="30" height="10" rx="2" ry="2" class="bar-progress" /></svg> 
+			10 yr support timeline <svg height="10" width="60"><rect x="0" y="0" width="30" height="10" rx="2" ry="2" class="bar" /></svg>
+			current quarter <svg height="10" width="60"><rect x="0" y="0" width="30" height="10" rx="2" ry="2" class="current-quarter-highlight" /><line x1="15" x2="15" y1="2" y2="10" class="current-quarter-line" /></svg>
+			tlos date:<svg height="10" width="60"><circle cx="5" cy="5" r="4" class="tlos-highlight"/></svg>op tlos date:<svg height="10" width="60"><circle cx="5" cy="5" r="4" class="optlos-highlight"/></svg>
+		</div>
+		<div class="data_table">
+			<table style="background: #fff; font-size:9px;">
+					<tr  class="data-header">
+						<td><div>CPUID</div></td>
+						<td><div>O. Pltfm Id</div></td>
+						<td><div>Ind. Pltfm Id</div></td>
+						<td><div>Type</div></td>
+						<td><div>CodeName</div></td>
+						<td><div>V. Segment</div></td>
+						<td><div>Platform Launch</div></td>
+						<td><div>Launch+7</div></td>
+						<td><div>Qtr RunsOutSpace</div></td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					<tr class="data-row">
+						<td>50654</td>
+						<td>0xb7</td>
+						<td>0x01</td>
+						<td>Core</td>
+						<td>Skylake Server</td>
+						<td>Workstation</td>
+						<td>2017 Q2</td>
+						<td>2024 Q2</td>
+						<td>2027 Q2</td>
+					</tr>
+					</table>
+	</div>
+	<div class="gantt-target"></div>
+	<script>
+		var tasks = [
+			{
+				start: '2017-06-01',
+				end: '2024-04-01',
+				tlos: '2026-04-01',
+				optlos: '2027-04-01',
+				name: '',
+				id: "Task 6",
+				progress: 0
+			},
+			{
+				start: '2020-01-01',
+				end: '2026-04-01',
+				tlos: '2027-04-01',
+				optlos: '2028-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2015-07-01',
+				end: '2022-07-01',
+				tlos: '2024-04-01',
+				optlos: '2025-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2021-04-01',
+				end: '2028-04-01',
+				tlos: '2029-04-01',
+				optlos: '2030-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2018-04-01',
+				end: '2025-04-01',
+				tlos: '2023-04-01',
+				optlos: '2024-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2022-01-01',
+				end: '2028-10-01',
+				tlos: '2028-04-01',
+				optlos: '2029-04-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2020-04-01',
+				end: '2027-04-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2023-01-01',
+				end: '2030-01-01',
+				tlos: '2023-04-01',
+				optlos: '2024-04-01',
+				name: '',
+				id: "Task 6",
+				progress: 0
+			},
+			{
+				start: '2021-10-01',
+				end: '2028-07-01',
+				tlos: '2028-04-01',
+				optlos: '2028-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			},
+			{
+				start: '2019-07-01',
+				end: '2025-10-01',
+				tlos: '2027-04-01',
+				optlos: '2027-07-01',
+				name: '',
+				id: "Task 0",
+				progress: 0
+			}
+		]
+		var gantt_chart = new Gantt(".gantt-target", tasks, {
+			on_click: task => {
+				console.log(task);
+			},
+			on_date_change: (task, start, end) => {
+				console.log(task, start, end);
+			},
+			on_progress_change: (task, progress) => {
+				console.log(task, progress);
+			},
+			on_view_change: (mode) => {
+				console.log(mode);
+			},
+			view_mode: 'Quarter',
+			header_height: 20,
+			language: 'en'
+		});
+	</script>
+</body>
+</html>
