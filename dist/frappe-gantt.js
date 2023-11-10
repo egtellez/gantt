@@ -598,7 +598,7 @@ var Gantt = (function () {
         draw() {
             this.draw_bar();
             this.draw_progress_bar();
-            this.draw_label();
+            //this.draw_label();
             this.draw_resize_handles();
         }
 
@@ -728,22 +728,14 @@ var Gantt = (function () {
         show_popup() {
             if (this.gantt.bar_being_dragged) return;
 
-            const start_date = date_utils.format(
-                this.task._start,
-                'MMM D',
-                this.gantt.options.language
-            );
-            const end_date = date_utils.format(
-                date_utils.add(this.task._end, -1, 'second'),
-                'MMM D',
-                this.gantt.options.language
-            );
-            const subtitle = start_date + ' - ' + end_date;
+            const patch_match = this.task._patch_match;
+            const uops = this.task._uops;
 
             this.gantt.show_popup({
                 target_element: this.$bar,
                 title: this.task.name,
-                subtitle: subtitle,
+                patch_match: patch_match,
+                uops: uops,
                 task: this.task,
             });
         }
@@ -1048,14 +1040,16 @@ var Gantt = (function () {
         make() {
             this.parent.innerHTML = `
             <div class="title"></div>
-            <div class="subtitle"></div>
+            <div class="uops"></div>
+            <div class="patch_match"></div>
             <div class="pointer"></div>
         `;
 
             this.hide();
 
             this.title = this.parent.querySelector('.title');
-            this.subtitle = this.parent.querySelector('.subtitle');
+            this.uops = this.parent.querySelector('.uops');
+            this.patch_match = this.parent.querySelector('.patch_match');
             this.pointer = this.parent.querySelector('.pointer');
         }
 
@@ -1076,7 +1070,8 @@ var Gantt = (function () {
             } else {
                 // set data
                 this.title.innerHTML = options.title;
-                this.subtitle.innerHTML = options.subtitle;
+                this.uops.innerHTML = options.uops;
+                this.patch_match.innerHTML = options.patch_match;
                 this.parent.style.width = this.parent.clientWidth + 'px';
             }
 
@@ -1181,10 +1176,10 @@ var Gantt = (function () {
                 column_width: 20,
                 step: 24,
                 view_modes: [...Object.values(VIEW_MODE)],
-                bar_height: 20,
+                bar_height: 15,
                 bar_corner_radius: 3,
                 arrow_curve: 5,
-                padding: 18,
+                padding: 15,
                 view_mode: 'Day',
                 date_format: 'YYYY-MM-DD',
                 popup_trigger: 'click',
@@ -1199,6 +1194,8 @@ var Gantt = (function () {
             this.tasks = tasks.map((task, i) => {
                 // convert to Date objects
                 task._start = date_utils.parse(task.start);
+                task._patch_match = task.patch_match;
+                task._uops = task.uops;
                 task._end = date_utils.parse(task.end);
 
                 if(task.tlos != undefined) {
@@ -1585,14 +1582,14 @@ var Gantt = (function () {
                 const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
                 const diff = date_utils.diff(task._start, start_date, 'month');
                 x = duration * this.options.column_width + this.options.column_width;
-                column_height += 38;
+                column_height += this.options.bar_height + 15;
                 createSVG('line', 
                 {
                     x1: x,
                     y1: column_height,
                     x2: x,
-                    y2: column_height + 20,
-                    class: 'wtf-line',
+                    y2: column_height + 25,
+                    class: 'serv-line',
                     append_to: this.layers.circle
                 });
             }
@@ -1609,21 +1606,21 @@ var Gantt = (function () {
                 const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
                 const diff = date_utils.diff(task._start, start_date, 'month');
                 x = duration * this.options.column_width + Math.ceil(this.options.column_width / 2);
-                column_height += 38;
+                column_height += this.options.bar_height + 15;
                 createSVG('line', 
                 {
                     x1: x,
                     y1: column_height,
                     x2: x,
-                    y2: column_height + 20,
+                    y2: column_height + 25,
                     class: 'tlos-line',
                     append_to: this.layers.circle
                 });
                 createSVG('circle', 
                 {
                     cx: x,
-                    cy: column_height + 10,
-                    r: 5,
+                    cy: column_height + 13,
+                    r: 4,
                     class: 'tlos-highlight',
                     append_to: this.layers.circle
                 });
@@ -1641,21 +1638,21 @@ var Gantt = (function () {
                 const duration = Math.floor(date_utils.diff(end_date, start_date, 'month') / 3);
                 const diff = date_utils.diff(task._start, start_date, 'month');
                 x = duration * this.options.column_width + Math.floor(this.options.column_width / 2);
-                column_height += 38;
+                column_height += this.options.bar_height + 15;
                 createSVG('line', 
                 {
                     x1: x,
                     y1: column_height,
                     x2: x,
-                    y2: column_height + 20,
+                    y2: column_height + 25,
                     class: 'optlos-line',
                     append_to: this.layers.circle
                 });
                 createSVG('circle', 
                 {
                     cx: x,
-                    cy: column_height + 10,
-                    r: 5,
+                    cy: column_height + 13,
+                    r: 4,
                     class: 'optlos-highlight',
                     append_to: this.layers.circle
                 });

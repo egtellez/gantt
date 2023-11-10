@@ -1,3 +1,31 @@
+div.container
+{
+    overflow: auto;    
+    /* POSITION */
+    position: relative;
+    
+}
+
+div.data_table
+{    
+    /* REMOVE FLOAT */
+    /* float: left; */
+    
+    /* POSITION */
+    position: fixed;
+    left: 5;
+}
+
+div.data_table table
+{
+  background: #fff; 
+  font-size:9px;
+}
+
+.gantt-target {
+   margin-left: 500px;
+}
+
 .gantt .grid-background {
   fill: none;
 }
@@ -6,21 +34,17 @@
   stroke: #e0e0e0;
   stroke-width: 1.4;
 }
-.legend {
-  width:750px; 
-  height:20px;
-}
 
 .tlos-highlight{
-  fill: #ee0000;
+  fill: #C81326;
 }
 
 .optlos-highlight{
-  fill: #4466AA;
+  fill: #fEC91B;
 }
 
 .current-quarter-highlight{
-  fill: #eeaa00;
+  fill: #ED8200;
   fill-opacity: 20%;
 }
 
@@ -31,29 +55,33 @@
   fill: #ffffff;
 }
 .gantt .grid-row:nth-child(even) {
-  fill: #f5f5f5;
+  fill: #E9E9E9;
 }
 .gantt .row-line {
-  stroke: #ebeff2;
+  stroke: #E9E9E9;
 }
-.gantt .wtf-line {
-  stroke: #A0A0A0;
+.gantt .serv-line {
+  stroke: #E9E9E9;
+  stroke-dasharray: 0.4cap;
   stroke-width: 2;
 }
 
-.tlos-line {
-  stroke: #8a8aff;
-  stroke-width: 2;
+.legend {
+  width:100%;
+  padding-top:5px;
+  height:30px;
+  font-size:12px;
 }
 
-.optlos-line {
-  stroke: #8a8aff;
+.tlos-line, .optlos-line {
+  stroke: #FF8F51;
+  stroke-dasharray: 0.2cap;
   stroke-width: 2;
 }
 
 .current-quarter-line {
-  stroke: #A0A0A0;
-  stroke-dasharray:1cap;
+  stroke: #E9E9E9;
+  stroke-dasharray:0.4cap;
 }
 
 .gantt .tick {
@@ -73,10 +101,10 @@
   stroke-width: 1.4;
 }
 .bar {
-  fill: #d8e2ec;
+  fill: #b4f0ff;
 }
 .bar-progress {
-  fill: #b8c2cc;
+  fill:#0095CA;
   stroke: #8D99A6;
   stroke-width: 0;
   transition: stroke-width 0.3s ease;
@@ -114,20 +142,20 @@
   outline: none;
 }
 .gantt .bar-wrapper:hover .bar {
-  fill: #a9b5c1;
+  fill: #DDD;
 }
 .gantt .bar-wrapper:hover .bar-progress {
-  fill: #8a8aff;
+  fill: #005B85;
 }
 .gantt .bar-wrapper:hover .handle {
   visibility: visible;
   opacity: 1;
 }
 .gantt .bar-wrapper.active .bar {
-  fill: #a9b5c1;
+  fill: #eec3f7;
 }
 .gantt .bar-wrapper.active .bar-progress {
-  fill: #8a8aff;
+  fill: #CC94DA;
 }
 .gantt .lower-text, .gantt .upper-text {
   font-size: 9px;
@@ -144,26 +172,25 @@
 }
 
 .gantt-container {
-  position: relative;
-  overflow: auto;
   font-size: 12px;
 }
 .gantt-container .popup-wrapper {
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 0;
-  color: #959da5;
+  background: #FFF;
+  padding: 2;
+  color: #000;
+  border: 1px solid #CC94DA;
   border-radius: 3px;
 }
 .gantt-container .popup-wrapper .title {
-  border-bottom: 3px solid #a3a3ff;
+  border-bottom: 3px solid #CC94DA;
   padding: 10px;
 }
-.gantt-container .popup-wrapper .subtitle {
+.gantt-container .popup-wrapper .uops, .patch_match {
   padding: 10px;
-  color: #dfe2e5;
+  color: #808080;
 }
 .gantt-container .popup-wrapper .pointer {
   position: absolute;
