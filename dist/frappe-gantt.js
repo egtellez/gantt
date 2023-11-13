@@ -1280,11 +1280,18 @@ var Gantt = (function () {
         }
 
         change_view_mode(mode = this.options.view_mode) {
+            const scroll_start = 1146;
             this.update_view_scale(mode);
             this.setup_dates();
             this.render();
             // fire viewmode_change event
-            this.trigger_event('view_change', [mode]);
+            const wdth = this.$svg
+                .querySelector('.grid .grid-row')
+                .getAttribute('width');
+
+            const scroll = this.get_diff_start_current_quarter()*this.options.column_width;
+
+            this.trigger_event('view_change', [mode, scroll_start+scroll, scroll]);
         }
 
         update_view_scale(view_mode) {
@@ -1546,10 +1553,15 @@ var Gantt = (function () {
             }
         }
 
-        make_current_quarter_highlight()
-        {
+        get_diff_start_current_quarter(){
             var curr_date = Date.now();
             var duration = Math.floor(date_utils.diff(curr_date, this.gantt_start, 'month') / 3);
+            return duration;
+        }
+
+        make_current_quarter_highlight()
+        {
+            const duration = this.get_diff_start_current_quarter();
             var line_height = 38 * (this.tasks.length + 1);
             createSVG('rect', 
             {

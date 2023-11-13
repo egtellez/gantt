@@ -395,8 +395,10 @@
 			on_progress_change: (task, progress) => {
 				console.log(task, progress);
 			},
-			on_view_change: (mode) => {
+			on_view_change: (mode, offset, scroll) => {
+				document.querySelector(".gantt-target").style.width = offset + 'px';
 				document.querySelector(".gantt-target").style.marginLeft = document.querySelector('.data_table').offsetWidth + "px";
+				document.querySelector(".container").scrollTo(scroll, 0);
 			},
 			view_mode: 'Quarter',
 			header_height: 20,
